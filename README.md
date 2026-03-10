@@ -13,7 +13,6 @@ Un clone del gioco **2048** costruito con Node.js, Express ed EJS. Supporta aute
 - Timer integrato nella partita
 - Temi — dark, light, colorful, syds-choice
 - Griglia variabile — 3x3, 4x4, 5x5
-- Pagina 404 con il dinosauro di Chrome
 
 ---
 
