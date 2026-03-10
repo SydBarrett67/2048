@@ -8,7 +8,7 @@ const { leggiUtenti, salvaUtenti } = require("./utils.js");
 const app = express();
 const PORT = 3000;
 
-const USERS_PATH = path.join(__dirname, "jsons/users.json");
+// const USERS_PATH = path.join(__dirname, "jsons/users.json");
 const LEADERBOARD_PATH = path.join(__dirname, "jsons/leaderboard.json");
 
 app.set('view engine', 'ejs');
@@ -28,9 +28,11 @@ app.use(session({
 // ---- HOME ----
 app.get("/home", (req, res) => {
     const gridSize = parseInt(req.query.size) || 4;
-    const utente   = req.session.utente ?? null;
+    const user   = req.session.user ?? null;
 
     const leaderboard = JSON.parse(fs.readFileSync(LEADERBOARD_PATH, "utf-8"));
+
+    console.log(!!user ? `Utente loggato: ${user.nome}` : "Nessun utente loggato");
 
     res.render("home", {
         titolo: "2048",
@@ -41,21 +43,22 @@ app.get("/home", (req, res) => {
         playing: false,
         grid: Array(gridSize * gridSize).fill(0),
         leaderboard,
-        userLoggedIn: !!utente,
-        user: utente ?? { nome: "", avatar: null }
+        userLoggedIn: !!user,
+        user: user ?? { nome: "", avatar: null },
+        theme: user?.tema ?? "dark"
     });
 });
 
 // ---- LOGIN ----
 app.get("/login", (req, res) => {
-    if (req.session.utente) return res.redirect("/home");
+    if (req.session.user) return res.redirect("/home");
     res.render("login");
 });
 
 // ---- Storico ----
 app.get("/storico", (req, res) => {
-    if (!req.session.utente) return res.redirect("/login");
-    res.render("storico", { utente: req.session.utente });
+    if (!req.session.user) return res.redirect("/login");
+    res.render("storico", { user: req.session.user });
 });
 
 // ---- API ----
@@ -71,7 +74,7 @@ app.post("/api/login", (req, res) => {
         salvaUtenti(utenti);
     }
 
-    req.session.utente = { nome, avatar: null };
+    req.session.user = { nome, avatar: null };
     res.json({ success: true });
 });
 
@@ -81,11 +84,11 @@ app.post("/api/logout", (req, res) => {
     res.json({ success: true });
 });
 
-// Utente corrente
+// user corrente
 app.get("/api/me", (req, res) => {
-    if (!req.session.utente)
+    if (!req.session.user)
         return res.status(401).json({ error: "Non loggato" });
-    res.json(req.session.utente);
+    res.json(req.session.user);
 });
 
 // Salva punteggio
@@ -98,12 +101,12 @@ app.post("/api/score", (req, res) => {
     leaderboard.sort((a, b) => b.punteggio - a.punteggio);
     fs.writeFileSync(LEADERBOARD_PATH, JSON.stringify(leaderboard.slice(0, 10), null, 4));
 
-    // ---- Storico utente ----
+    // ---- Storico user ----
     const utenti = leggiUtenti();
-    const utente = utenti.find(u => u.nome === nome);
-    if (utente) {
-        if (!utente.storico) utente.storico = [];
-        utente.storico.push({ punteggio, mosse, tempo, data: new Date().toISOString() });
+    const user = utenti.find(u => u.nome === nome);
+    if (user) {
+        if (!user.storico) user.storico = [];
+        user.storico.push({ punteggio, mosse, tempo, data: new Date().toISOString() });
         salvaUtenti(utenti);
     }
 
@@ -111,12 +114,12 @@ app.post("/api/score", (req, res) => {
 });
 
 app.get("/api/storico", (req, res) => {
-    if (!req.session.utente)
+    if (!req.session.user)
         return res.status(401).json({ error: "Non loggato" });
 
     const utenti = leggiUtenti();
-    const utente = utenti.find(u => u.nome === req.session.utente.nome);
-    const storico = utente?.storico ?? [];
+    const user = utenti.find(u => u.nome === req.session.user.nome);
+    const storico = user?.storico ?? [];
 
     res.json(storico.reverse());
 });

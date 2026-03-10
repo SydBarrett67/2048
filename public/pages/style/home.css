@@ -21,6 +21,24 @@
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+.theme-selector {
+    display: flex;
+    gap: 0.4rem;
+    padding: 0.5rem 1.2rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.theme-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.3rem 0.6rem;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.tema-btn:hover { border-color: var(--accent); }
+
 body {
     background: var(--bg);
     color: var(--text);

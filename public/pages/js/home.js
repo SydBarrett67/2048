@@ -17,6 +17,7 @@ const elTimer      = document.querySelector(".score-box-timer .value");
 
 // ---- INIT ----
 function inizia() {
+    board.style.gridTemplateColumns = `repeat(${GRID_SIZE}, 1fr)`;
     griglia         = Array.from({ length: GRID_SIZE }, () => Array(GRID_SIZE).fill(0));
     punteggio       = 0;
     mosse           = 0;
@@ -162,7 +163,7 @@ function haiPerso() {
 function fine(titolo) {
     gameOver = true;
     clearInterval(timerInterval);
-    const hasWon = griglia.some(r => r.includes(64));
+    const hasWon = griglia.some(r => r.includes(2048));
     if (hasWon) salvaScore();
 
     const overlay = document.createElement("div");
@@ -202,6 +203,15 @@ document.querySelectorAll(".grid-size-btn").forEach(btn =>
 
 document.querySelector(".hamburger")?.addEventListener("click", () =>
     document.getElementById("hamburger-menu").classList.toggle("open")
+);
+
+
+// -- TEMI --
+document.querySelectorAll(".theme-btn").forEach(btn =>
+    btn.addEventListener("click", () => {
+        document.documentElement.setAttribute("data-theme", btn.dataset.theme);
+        localStorage.setItem("theme", btn.dataset.theme);
+    })
 );
 
 document.getElementById("btn-logout")?.addEventListener("click", async () => {
