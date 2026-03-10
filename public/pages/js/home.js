@@ -1,3 +1,5 @@
+document.addEventListener("DOMContentLoaded", () => {
+
 const GRID_SIZE = parseInt(document.querySelector(".board").dataset.size) || 4;
 
 // ---- STATE ----
@@ -10,10 +12,10 @@ let secondi         = 0;
 let timerInterval   = null;
 
 // ---- DOM ----
-const board        = document.querySelector(".board");
-const elPunteggio  = document.querySelector(".score-box:nth-child(1) .value");
-const elMosse      = document.querySelector(".score-box:nth-child(3) .value");
-const elTimer      = document.querySelector(".score-box-timer .value");
+const board       = document.querySelector(".board");
+const elPunteggio = document.querySelector(".score-box:nth-child(1) .value");
+const elMosse     = document.querySelector(".score-box:nth-child(3) .value");
+const elTimer     = document.querySelector(".score-box-timer .value");
 
 // ---- INIT ----
 function inizia() {
@@ -65,7 +67,7 @@ function render(fuse = new Set(), mosse_ = new Set()) {
         const tile = tiles[idx];
         if (!tile) return;
 
-        tile.className  = val === 0 ? "tile tile-empty" : `tile tile-${Math.min(val, 2048)}`;
+        tile.className   = val === 0 ? "tile tile-empty" : `tile tile-${Math.min(val, 2048)}`;
         tile.textContent = val || "";
 
         if (fuse.has(idx)) tile.classList.add("pop");
@@ -163,8 +165,7 @@ function haiPerso() {
 function fine(titolo) {
     gameOver = true;
     clearInterval(timerInterval);
-    const hasWon = griglia.some(r => r.includes(2048));
-    if (hasWon) salvaScore();
+    if (griglia.some(r => r.includes(2048))) salvaScore();
 
     const overlay = document.createElement("div");
     overlay.className = "overlay";
@@ -201,18 +202,23 @@ document.querySelectorAll(".grid-size-btn").forEach(btn =>
     btn.addEventListener("click", () => window.location.href = `/home?size=${btn.dataset.size}`)
 );
 
-document.querySelector(".hamburger")?.addEventListener("click", () =>
+document.getElementById("btn-hamburger")?.addEventListener("click", () =>
     document.getElementById("hamburger-menu").classList.toggle("open")
 );
 
+document.querySelectorAll(".theme-btn").forEach(btn => {
+    btn.addEventListener("click", async () => {
+        const theme = btn.dataset.theme;
+        document.documentElement.setAttribute("data-theme", theme);
+        await fetch("/api/tema", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ tema: theme })
+        });
+    });
+});
 
-// -- TEMI --
-document.querySelectorAll(".theme-btn").forEach(btn =>
-    btn.addEventListener("click", () => {
-        document.documentElement.setAttribute("data-theme", btn.dataset.theme);
-        localStorage.setItem("theme", btn.dataset.theme);
-    })
-);
+document.documentElement.setAttribute("data-theme", window.THEME ?? "dark");
 
 document.getElementById("btn-logout")?.addEventListener("click", async () => {
     await fetch("/api/logout", { method: "POST" });
@@ -223,3 +229,5 @@ document.getElementById("btn-nuova")?.addEventListener("click", inizia);
 
 // ---- START ----
 inizia();
+
+}); // fine DOMContentLoaded

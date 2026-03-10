@@ -32,8 +32,6 @@ app.get("/home", (req, res) => {
 
     const leaderboard = JSON.parse(fs.readFileSync(LEADERBOARD_PATH, "utf-8"));
 
-    console.log(!!user ? `Utente loggato: ${user.nome}` : "Nessun utente loggato");
-
     res.render("home", {
         titolo: "2048",
         gridSize,
@@ -128,6 +126,26 @@ app.get("/api/storico", (req, res) => {
 app.get("/api/leaderboard", (req, res) => {
     const data = JSON.parse(fs.readFileSync(LEADERBOARD_PATH, "utf-8"));
     res.json(data);
+});
+
+// Temi
+app.post("/api/tema", (req, res) => {
+    if (!req.session.user)
+        return res.status(401).json({ error: "Non loggato" });
+
+    const { tema } = req.body;
+    if (!["dark", "light", "colorful", "syds-choice"].includes(tema))
+        return res.status(400).json({ error: "Tema non valido" });
+
+    const utenti = leggiUtenti();
+    const utente = utenti.find(u => u.nome === req.session.user.nome);
+    if (utente) {
+        utente.tema = tema;
+        salvaUtenti(utenti);
+        req.session.user.tema = tema;
+    }
+
+    res.json({ success: true });
 });
 
 // ---- FALLBACK 404 ----

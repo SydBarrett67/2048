@@ -1,5 +1,5 @@
 /* DEFAULT */
-:root {
+:root, [data-theme="dark"] {
     --bg:      #0f0e11;
     --surface: #1a1820;
     --border:  #2e2b38;
@@ -9,7 +9,7 @@
     --muted:   #6b6880;
 }
 
-[data-theme="light"] {
+html[data-theme="light"] {
     --bg:      #f5f3ef;
     --surface: #ffffff;
     --border:  #ddd8d0;
@@ -19,7 +19,7 @@
     --muted:   #9a9080;
 }
 
-[data-theme="retro"] {
+html[data-theme="colorful"] {
     --bg:      #1a1200;
     --surface: #2a1e00;
     --border:  #4a3800;
@@ -27,4 +27,14 @@
     --accent2: #ffaa00;
     --text:    #ccffcc;
     --muted:   #668866;
+}
+
+html[data-theme="syds-choice"] {
+    --bg:      #16001e;
+    --surface: #2d031d;
+    --border:  #751006;
+    --accent:  #ffeaae;
+    --accent2: #ff6f59;
+    --text:    #fef4d7;
+    --muted:   #f7b2b7;
 }

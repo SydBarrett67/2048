@@ -26,6 +26,7 @@
     gap: 0.4rem;
     padding: 0.5rem 1.2rem;
     border-bottom: 1px solid var(--border);
+    flex-wrap: wrap;
 }
 
 .theme-btn {
@@ -37,7 +38,7 @@
     font-size: 1rem;
 }
 
-.tema-btn:hover { border-color: var(--accent); }
+.theme-btn:hover { border-color: var(--accent); }
 
 body {
     background: var(--bg);
@@ -306,7 +307,7 @@ header p.subtitle {
     border: 1px solid var(--border);
     border-radius: 10px;
     padding: 0.5rem 0;
-    min-width: 180px;
+    min-width: 220px;
     flex-direction: column;
 }
 
