@@ -1,0 +1,66 @@
+.auth-box {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 340px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    animation: fadeUp 0.5s ease both;
+}
+
+.auth-tabs {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.auth-tab {
+    flex: 1;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1rem;
+    letter-spacing: 0.1em;
+    padding: 0.5rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.auth-tab.active {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.auth-form.hidden { display: none; }
+
+.auth-input {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.85rem;
+    padding: 0.7rem 1rem;
+    outline: none;
+    transition: border-color 0.15s ease;
+}
+
+.auth-input:focus { border-color: var(--accent); }
+
+.auth-error {
+    color: var(--accent2);
+    font-size: 0.75rem;
+    min-height: 1rem;
+}

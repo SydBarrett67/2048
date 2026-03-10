@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="it">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Login — 2048</title>
+        <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+        <link rel="stylesheet" href="/pages/style/home.css">
+        <link rel="stylesheet" href="/pages/style/login.css">
+    </head>
+    <body>
+
+        <header>
+            <h1>2048</h1>
+            <p class="subtitle">Inserisci il tuo username per giocare</p>
+        </header>
+
+        <div class="auth-box">
+            <div class="auth-error" id="errore"></div>
+            <input class="auth-input" type="text" id="nome" placeholder="Il tuo username" maxlength="20" />
+            <button class="btn btn-primary" id="btn-login">▶ ENTRA</button>
+        </div>
+
+        <script src="/pages/js/login.js"></script>
+    </body>
+</html>

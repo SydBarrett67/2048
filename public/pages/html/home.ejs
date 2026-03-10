@@ -19,7 +19,7 @@
         <div class="score-bar">
             <div class="score-box">
                 <div class="label">Punteggio</div>
-                <div class="value"><%= punteggio %></div>
+                <div class="value"><%= score %></div>
             </div>
             <div class="score-box">
                 <div class="label">Record</div>
@@ -31,7 +31,7 @@
             </div>
         </div>
 
-        <!-- GRIGLIA DEMO -->
+        <!-- GRIGLIA  -->
         <div class="board-wrapper">
             <div class="board">
                 <% grid.forEach(function(val) { %>
@@ -69,15 +69,20 @@
 
         <% if (userLoggedIn) { %>
             <div class="user-area">
-                <img class="avatar" src="<%= utente.avatar %>" alt="<%= utente.nome %>" />
-                <span class="username"><%= utente.nome %></span>
+                <img class="avatar" src="<%= user.avatar %>" alt="<%= user.nome %>" />
+                <span class="username"><%= user.nome %></span>
                 <div class="hamburger">
                     <span></span>
                     <span></span>
                     <span></span>
                 </div>
             </div>
+        <% } else { %>
+            <a href="/login" class="btn-login-fixed">▶ LOGIN</a>
         <% } %>
 
+
+        <!-- Passa la dimensione griglia al JS -->
+        <script src="/pages/js/home.js"></script>
     </body>
 </html>
