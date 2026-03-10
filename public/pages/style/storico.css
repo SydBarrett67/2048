@@ -1,0 +1,64 @@
+.storico-box {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 520px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    animation: fadeUp 0.5s ease both;
+}
+
+.storico-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 0.9rem 1.2rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1.5fr;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    transition: border-color 0.15s ease;
+}
+
+.storico-card:hover { border-color: var(--accent); }
+
+.storico-card .stat-label {
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+}
+
+.storico-card .stat-value {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.2rem;
+    color: var(--text);
+}
+
+.storico-card .stat-data {
+    font-size: 0.7rem;
+    color: var(--muted);
+    text-align: right;
+}
+
+.storico-empty {
+    color: var(--muted);
+    font-size: 0.85rem;
+    text-align: center;
+    padding: 2rem;
+}
+
+.btn-back {
+    position: relative;
+    z-index: 1;
+    color: var(--muted);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1rem;
+    letter-spacing: 0.1em;
+    text-decoration: none;
+    transition: color 0.15s ease;
+}
+
+.btn-back:hover { color: var(--accent); }

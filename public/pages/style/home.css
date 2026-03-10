@@ -108,6 +108,11 @@ header p.subtitle {
     line-height: 1.2;
 }
 
+.score-row .tempo {
+    color: var(--muted);
+    font-size: 0.75rem;
+}
+
 /* ---- GRIGLIA ---- */
 .board-wrapper {
     position: relative;
@@ -228,6 +233,36 @@ header p.subtitle {
 .btn-login-fixed:hover {
     border-color: var(--accent);
     color: var(--accent);
+}
+
+/* HAMBURGER */
+.hamburger-menu {
+    display: none;
+    position: fixed;
+    top: 5rem;
+    right: 1.5rem;
+    z-index: 20;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 0.5rem 0;
+    min-width: 180px;
+    flex-direction: column;
+}
+
+.hamburger-menu.open { display: flex; }
+
+.hamburger-menu a {
+    padding: 0.7rem 1.2rem;
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.85rem;
+    transition: color 0.15s ease, background 0.15s ease;
+}
+
+.hamburger-menu a:hover {
+    color: var(--text);
+    background: var(--border);
 }
 
 /* ---- CLASSIFICA (top left) ---- */

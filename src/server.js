@@ -29,15 +29,18 @@ app.use(session({
 app.get("/home", (req, res) => {
     const gridSize = parseInt(req.query.size) || 4;
     const utente   = req.session.utente ?? null;
+
+    const leaderboard = JSON.parse(fs.readFileSync(LEADERBOARD_PATH, "utf-8"));
+
     res.render("home", {
         titolo: "2048",
         gridSize,
         score: 0,
-        record: 8192,
+        record: 0,
         moves: 0,
         playing: false,
         grid: Array(gridSize * gridSize).fill(0),
-        leaderboard: [],
+        leaderboard,
         userLoggedIn: !!utente,
         user: utente ?? { nome: "", avatar: null }
     });
@@ -47,6 +50,12 @@ app.get("/home", (req, res) => {
 app.get("/login", (req, res) => {
     if (req.session.utente) return res.redirect("/home");
     res.render("login");
+});
+
+// ---- Storico ----
+app.get("/storico", (req, res) => {
+    if (!req.session.utente) return res.redirect("/login");
+    res.render("storico", { utente: req.session.utente });
 });
 
 // ---- API ----
@@ -81,14 +90,36 @@ app.get("/api/me", (req, res) => {
 
 // Salva punteggio
 app.post("/api/score", (req, res) => {
-    const { nome, punteggio, mosse } = req.body;
-    const data = JSON.parse(fs.readFileSync(LEADERBOARD_PATH, "utf-8"));
+    const { nome, punteggio, mosse, tempo } = req.body;
 
-    data.push({ nome, punteggio, mosse, data: new Date().toISOString() });
-    data.sort((a, b) => b.punteggio - a.punteggio);
+    // ---- Leaderboard globale ----
+    const leaderboard = JSON.parse(fs.readFileSync(LEADERBOARD_PATH, "utf-8"));
+    leaderboard.push({ nome, punteggio, mosse, tempo, data: new Date().toISOString() });
+    leaderboard.sort((a, b) => b.punteggio - a.punteggio);
+    fs.writeFileSync(LEADERBOARD_PATH, JSON.stringify(leaderboard.slice(0, 10), null, 4));
 
-    fs.writeFileSync(LEADERBOARD_PATH, JSON.stringify(data.slice(0, 10), null, 4));
+    // ---- Storico utente ----
+    const utenti = leggiUtenti();
+    const utente = utenti.find(u => u.nome === nome);
+    if (utente) {
+        if (!utente.storico) utente.storico = [];
+        utente.storico.push({ punteggio, mosse, tempo, data: new Date().toISOString() });
+        salvaUtenti(utenti);
+    }
+
     res.json({ success: true });
+});
+
+app.get("/api/storico", (req, res) => {
+    if (!req.session.utente)
+        return res.status(401).json({ error: "Non loggato" });
+
+    const utenti = leggiUtenti();
+    const utente = utenti.find(u => u.nome === req.session.utente.nome);
+    const storico = utente?.storico ?? [];
+
+    // Più recenti prima
+    res.json(storico.reverse());
 });
 
 // Leggi classifica

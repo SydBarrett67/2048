@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="it">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Storico — 2048</title>
+        <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+        <link rel="stylesheet" href="/pages/style/home.css">
+        <link rel="stylesheet" href="/pages/style/storico.css">
+    </head>
+    <body>
+
+        <header>
+            <h1>Storico</h1>
+            <p class="subtitle">Le tue partite, <strong style="color:var(--accent)"><%= utente.nome %></strong></p>
+        </header>
+
+        <div class="storico-box" id="storico-box">
+            <div class="storico-loading">Caricamento...</div>
+        </div>
+
+        <a href="/home" class="btn-back">← TORNA ALLA HOME</a>
+
+        <script src="/pages/js/storico.js"></script>
+    </body>
+</html>

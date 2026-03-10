@@ -27,10 +27,35 @@ function inizia() {
     mosse     = 0;
     gameOver  = false;
     ultimaDirezione = null;
+    avviaTimer();
     inizializzaBoard();
     aggiungiTileRandom();
     aggiungiTileRandom();
     render();
+}
+
+// ---- TIMER ----
+let timerInterval = null;
+let secondi       = 0;
+
+function avviaTimer() {
+    clearInterval(timerInterval);
+    secondi = 0;
+    aggiornaTimerDOM();
+    timerInterval = setInterval(() => {
+        secondi++;
+        aggiornaTimerDOM();
+    }, 1000);
+}
+
+function fermaTimer() {
+    clearInterval(timerInterval);
+}
+
+function aggiornaTimerDOM() {
+    const mm = String(Math.floor(secondi / 60)).padStart(2, "0");
+    const ss = String(secondi % 60).padStart(2, "0");
+    document.querySelector(".score-box-timer .value").textContent = `${mm}:${ss}`;
 }
 
 // ============================================================
@@ -182,12 +207,14 @@ function haiPerso() {
 
 function gestisciVittoria() {
     gameOver = true;
+    fermaTimer();
     salvaScore();
-    mostraOverlay("HAI VINTO!", "Sei arrivato a 2048!");
+    mostraOverlay("HAI VINTO!", `Tempo: ${aggiornaTimerDOM()}`);
 }
 
 function gestisciSconfitta() {
     gameOver = true;
+    fermaTimer();
     salvaScore();
     mostraOverlay("GAME OVER", "Nessuna mossa disponibile.");
 }
@@ -273,6 +300,15 @@ document.querySelectorAll(".btn-primary").forEach(btn => {
     if (btn.textContent.includes("NUOVA")) {
         btn.addEventListener("click", inizia);
     }
+});
+
+document.querySelector(".hamburger").addEventListener("click", () => {
+    document.getElementById("hamburger-menu").classList.toggle("open");
+});
+
+document.getElementById("btn-logout")?.addEventListener("click", async () => {
+    await fetch("/api/logout", { method: "POST" });
+    window.location.href = "/login";
 });
 
 // ============================================================

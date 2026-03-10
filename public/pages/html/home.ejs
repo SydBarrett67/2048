@@ -29,7 +29,12 @@
                 <div class="label">Mosse</div>
                 <div class="value"><%= moves %></div>
             </div>
+            <div class="score-box score-box-timer">
+                <div class="label">Tempo</div>
+                <div class="value">00:00</div>
+            </div>
         </div>
+        
 
         <!-- GRIGLIA  -->
         <div class="board-wrapper">
@@ -71,10 +76,9 @@
             <div class="user-area">
                 <img class="avatar" src="<%= user.avatar %>" alt="<%= user.nome %>" />
                 <span class="username"><%= user.nome %></span>
-                <div class="hamburger">
-                    <span></span>
-                    <span></span>
-                    <span></span>
+                <div class="hamburger-menu" id="hamburger-menu">
+                    <a href="/storico">Storico partite</a>
+                    <a href="#" id="btn-logout">⏻ Logout</a>
                 </div>
             </div>
         <% } else { %>
