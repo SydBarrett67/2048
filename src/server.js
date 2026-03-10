@@ -118,7 +118,6 @@ app.get("/api/storico", (req, res) => {
     const utente = utenti.find(u => u.nome === req.session.utente.nome);
     const storico = utente?.storico ?? [];
 
-    // Più recenti prima
     res.json(storico.reverse());
 });
 
@@ -130,7 +129,7 @@ app.get("/api/leaderboard", (req, res) => {
 
 // ---- FALLBACK 404 ----
 app.use((req, res) => {
-    res.status(404).sendFile(path.join(__dirname, "../public/Chrome-Dinosaur/index.html"));
+    res.status(404).send("<h1> Pagina non trovata</h1>");
 });
 
 app.listen(PORT, () => {

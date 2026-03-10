@@ -34,11 +34,18 @@
                 <div class="value">00:00</div>
             </div>
         </div>
-        
 
-        <!-- GRIGLIA  -->
+        <!-- SELETTORE GRIGLIA -->
+        <div class="grid-size-selector">
+            <span>Griglia:</span>
+            <button class="grid-size-btn <%= gridSize === 3 ? 'active' : '' %>" data-size="3">3×3</button>
+            <button class="grid-size-btn <%= gridSize === 4 ? 'active' : '' %>" data-size="4">4×4</button>
+            <button class="grid-size-btn <%= gridSize === 5 ? 'active' : '' %>" data-size="5">5×5</button>
+        </div>
+
+        <!-- GRIGLIA -->
         <div class="board-wrapper">
-            <div class="board">
+            <div class="board" data-size="<%= gridSize %>">
                 <% grid.forEach(function(val) { %>
                     <% if (val === 0) { %>
                         <div class="tile tile-empty"></div>
@@ -52,10 +59,10 @@
         <!-- AZIONI -->
         <div class="actions">
             <% if (playing) { %>
-                <button class="btn btn-primary">▶ CONTINUA PARTITA</button>
-                <button class="btn btn-secondary">↺ NUOVA PARTITA</button>
+                <button class="btn btn-primary" id="btn-continua">▶ CONTINUA PARTITA</button>
+                <button class="btn btn-secondary" id="btn-nuova">↺ NUOVA PARTITA</button>
             <% } else { %>
-                <button class="btn btn-primary">▶ NUOVA PARTITA</button>
+                <button class="btn btn-primary" id="btn-nuova">▶ NUOVA PARTITA</button>
             <% } %>
             <button class="btn btn-secondary">⚙ IMPOSTAZIONI</button>
         </div>
@@ -67,26 +74,34 @@
                 <div class="score-row">
                     <span class="rank">#<%= i + 1 %></span>
                     <span class="player"><%= entry.nome %></span>
-                    <span class="pts"><%= entry.score.toLocaleString('it-IT') %></span>
+                    <span class="pts"><%= entry.punteggio.toLocaleString('it-IT') %></span>
+                    <span class="tempo">
+                        <%= Math.floor(entry.tempo / 60) %>m <%= entry.tempo % 60 %>s
+                    </span>
                 </div>
             <% }) %>
         </div>
 
+        <!-- USER AREA -->
         <% if (userLoggedIn) { %>
+            <script>window.USERNAME = "<%= user.nome %>";</script>
             <div class="user-area">
-                <img class="avatar" src="<%= user.avatar %>" alt="<%= user.nome %>" />
+                <img class="avatar" src="<%= user.avatar || '/img/default-avatar.png' %>" alt="<%= user.nome %>" />
                 <span class="username"><%= user.nome %></span>
-                <div class="hamburger-menu" id="hamburger-menu">
-                    <a href="/storico">Storico partite</a>
-                    <a href="#" id="btn-logout">⏻ Logout</a>
+                <div class="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
                 </div>
+            </div>
+            <div class="hamburger-menu" id="hamburger-menu">
+                <a href="/storico">Storico partite</a>
+                <a href="#" id="btn-logout">⏻ Logout</a>
             </div>
         <% } else { %>
             <a href="/login" class="btn-login-fixed">▶ LOGIN</a>
         <% } %>
 
-
-        <!-- Passa la dimensione griglia al JS -->
         <script src="/pages/js/home.js"></script>
     </body>
 </html>

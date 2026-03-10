@@ -11,4 +11,4 @@ function salvaUtenti(utenti) {
     fs.writeFileSync(USERS_PATH, JSON.stringify(utenti, null, 4));
 }
 
-module.exports = { leggiUtenti, salvaUtenti };  // ← questa riga è fondamentale
+module.exports = { leggiUtenti, salvaUtenti };

@@ -1,11 +1,11 @@
 :root {
-    --bg:       #0f0e11;
-    --surface:  #1a1820;
-    --border:   #2e2b38;
-    --accent:   #f5c542;
-    --accent2:  #e8714a;
-    --text:     #f0ecff;
-    --muted:    #6b6880;
+    --bg:      #0f0e11;
+    --surface: #1a1820;
+    --border:  #2e2b38;
+    --accent:  #f5c542;
+    --accent2: #e8714a;
+    --text:    #f0ecff;
+    --muted:   #6b6880;
     --tile-2:    #3b3550; --tile-2-t:    #c8c0f0;
     --tile-4:    #4a3a60; --tile-4-t:    #d8c8ff;
     --tile-8:    #c4703a; --tile-8-t:    #fff8ee;
@@ -35,21 +35,20 @@ body {
     overflow-x: hidden;
 }
 
-/* Sfondo con pattern geometrico */
 body::before {
     content: '';
     position: fixed;
     inset: 0;
     background-image:
-    linear-gradient(var(--border) 1px, transparent 1px),
-    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
     background-size: 48px 48px;
     opacity: 0.35;
     z-index: 0;
     pointer-events: none;
 }
 
-/* ---- HEADER ---- */
+/* HEADER */
 header {
     position: relative;
     z-index: 1;
@@ -63,9 +62,7 @@ header h1 {
     letter-spacing: 0.06em;
     line-height: 1;
     color: var(--accent);
-    text-shadow:
-    4px 4px 0 var(--accent2),
-    8px 8px 0 #3a1a00;
+    text-shadow: 4px 4px 0 var(--accent2), 8px 8px 0 #3a1a00;
 }
 
 header p.subtitle {
@@ -76,7 +73,7 @@ header p.subtitle {
     margin-top: 0.4rem;
 }
 
-/* ---- SCORE BAR ---- */
+/* SCORE BAR */
 .score-bar {
     position: relative;
     z-index: 1;
@@ -91,11 +88,11 @@ header p.subtitle {
     border-radius: 6px;
     padding: 0.6rem 1.4rem;
     text-align: center;
-    min-width: 100px;
+    min-width: 150px;
 }
 
 .score-box .label {
-    font-size: 0.65rem;
+    font-size: 0.6rem;
     letter-spacing: 0.2em;
     text-transform: uppercase;
     color: var(--muted);
@@ -104,16 +101,10 @@ header p.subtitle {
 .score-box .value {
     font-size: 1.6rem;
     font-weight: 500;
-    color: var(--text);
     line-height: 1.2;
 }
 
-.score-row .tempo {
-    color: var(--muted);
-    font-size: 0.75rem;
-}
-
-/* ---- GRIGLIA ---- */
+/* BOARD */
 .board-wrapper {
     position: relative;
     z-index: 1;
@@ -128,9 +119,7 @@ header p.subtitle {
     border: 1px solid var(--border);
     border-radius: 12px;
     padding: 10px;
-    box-shadow:
-    0 0 0 1px var(--border),
-    0 20px 60px rgba(0,0,0,0.6);
+    box-shadow: 0 0 0 1px var(--border), 0 20px 60px rgba(0,0,0,0.6);
 }
 
 .tile {
@@ -142,44 +131,32 @@ header p.subtitle {
     justify-content: center;
     font-family: 'Bebas Neue', sans-serif;
     font-size: clamp(1.4rem, 4vw, 2.2rem);
-    letter-spacing: 0.02em;
-    transition: transform 0.1s ease;
-    animation: popIn 0.2s ease both;
+    transition: background 0.1s ease, color 0.1s ease;
 }
 
-.tile:hover { transform: scale(1.04); }
+.tile-empty  { background: rgba(255,255,255,0.03); border: 1px solid var(--border); animation: none; }
+.tile-2      { background: var(--tile-2);    color: var(--tile-2-t); }
+.tile-4      { background: var(--tile-4);    color: var(--tile-4-t); }
+.tile-8      { background: var(--tile-8);    color: var(--tile-8-t); }
+.tile-16     { background: var(--tile-16);   color: var(--tile-16-t); }
+.tile-32     { background: var(--tile-32);   color: var(--tile-32-t); }
+.tile-64     { background: var(--tile-64);   color: var(--tile-64-t); }
+.tile-128    { background: var(--tile-128);  color: var(--tile-128-t); }
+.tile-256    { background: var(--tile-256);  color: var(--tile-256-t); }
+.tile-512    { background: var(--tile-512);  color: var(--tile-512-t); }
+.tile-1024   { background: var(--tile-1024); color: var(--tile-1024-t); }
+.tile-2048   { background: var(--tile-2048); color: var(--tile-2048-t); }
 
-/* Colori tile */
-.tile-2    { background: var(--tile-2);    color: var(--tile-2-t); }
-.tile-4    { background: var(--tile-4);    color: var(--tile-4-t); }
-.tile-8    { background: var(--tile-8);    color: var(--tile-8-t); }
-.tile-16   { background: var(--tile-16);   color: var(--tile-16-t); }
-.tile-32   { background: var(--tile-32);   color: var(--tile-32-t); }
-.tile-64   { background: var(--tile-64);   color: var(--tile-64-t); }
-.tile-128  { background: var(--tile-128);  color: var(--tile-128-t); }
-.tile-256  { background: var(--tile-256);  color: var(--tile-256-t); }
-.tile-512  { background: var(--tile-512);  color: var(--tile-512-t); }
-.tile-1024 { background: var(--tile-1024); color: var(--tile-1024-t); }
-.tile-2048 { background: var(--tile-2048); color: var(--tile-2048-t); }
-
-.tile-empty {
-    background: rgba(255,255,255,0.03);
-    border: 1px solid var(--border);
+.tile.pop {
+    animation: tilePop 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-/* ---- AZIONI ---- */
-.actions {
-    position: relative;
-    z-index: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.8rem;
-    width: 100%;
-    max-width: 420px;
-    animation: fadeUp 0.6s 0.3s ease both;
-}
+.slide-su       { animation: slide 0.12s ease both; --dx: 0px;   --dy: 12px; }
+.slide-giu      { animation: slide 0.12s ease both; --dx: 0px;   --dy: -12px; }
+.slide-sinistra { animation: slide 0.12s ease both; --dx: 12px;  --dy: 0px; }
+.slide-destra   { animation: slide 0.12s ease both; --dx: -12px; --dy: 0px; }
 
+/* BOTTONI */
 .btn {
     width: 100%;
     padding: 0.9rem 2rem;
@@ -189,7 +166,7 @@ header p.subtitle {
     font-size: 1.4rem;
     letter-spacing: 0.1em;
     cursor: pointer;
-    transition: transform 0.1s ease, box-shadow 0.1s ease;
+    transition: transform 0.1s ease;
 }
 
 .btn:hover  { transform: translateY(-2px); }
@@ -208,113 +185,35 @@ header p.subtitle {
     font-size: 1rem;
 }
 
-.btn-secondary:hover { border-color: var(--accent2); color: var(--text); }
+.btn-secondary:hover {
+    border-color: var(--accent2);
+    color: var(--text);
+}
 
+/* AZIONI */
+.actions {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.8rem;
+    width: 100%;
+    max-width: 420px;
+    animation: fadeUp 0.6s 0.3s ease both;
+}
 
-/* Login button */
+/* FIXED TOP RIGHT — base condivisa */
+.user-area,
 .btn-login-fixed {
     position: fixed;
     top: 1.5rem;
     right: 1.5rem;
     z-index: 10;
-    background: transparent;
-    border: 1px solid var(--border);
-    color: var(--muted);
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1rem;
-    letter-spacing: 0.1em;
-    padding: 0.5rem 1rem;
-    border-radius: 8px;
-    text-decoration: none;
-    transition: border-color 0.15s ease, color 0.15s ease;
-    animation: fadeDown 0.6s ease both;
-}
-
-.btn-login-fixed:hover {
-    border-color: var(--accent);
-    color: var(--accent);
-}
-
-/* HAMBURGER */
-.hamburger-menu {
-    display: none;
-    position: fixed;
-    top: 5rem;
-    right: 1.5rem;
-    z-index: 20;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 0.5rem 0;
-    min-width: 180px;
-    flex-direction: column;
-}
-
-.hamburger-menu.open { display: flex; }
-
-.hamburger-menu a {
-    padding: 0.7rem 1.2rem;
-    color: var(--muted);
-    text-decoration: none;
-    font-size: 0.85rem;
-    transition: color 0.15s ease, background 0.15s ease;
-}
-
-.hamburger-menu a:hover {
-    color: var(--text);
-    background: var(--border);
-}
-
-/* ---- CLASSIFICA (top left) ---- */
-.best-scores {
-    position: fixed;
-    top: 1.5rem;
-    left: 1.5rem;
-    z-index: 10;
-    width: 220px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 1rem 1.2rem;
     animation: fadeDown 0.6s 0.4s ease both;
 }
 
-.best-scores h2 {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1rem;
-    letter-spacing: 0.2em;
-    color: var(--muted);
-    margin-bottom: 0.8rem;
-}
-
-.score-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.4rem 0;
-    border-bottom: 1px solid var(--border);
-    font-size: 0.85rem;
-}
-
-.score-row:last-child { border-bottom: none; }
-
-.score-row .rank {
-    color: var(--accent);
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.1rem;
-    width: 2rem;
-}
-
-.score-row .player { color: var(--muted); }
-.score-row .pts    { color: var(--text); font-weight: 500; }
-
-/* ---- USER AREA  ---- */
-/* ---- USER AREA (top right) ---- */
 .user-area {
-    position: fixed;
-    top: 1.5rem;
-    right: 1.5rem;
-    z-index: 10;
     display: flex;
     align-items: center;
     gap: 0.6rem;
@@ -322,7 +221,6 @@ header p.subtitle {
     border: 1px solid var(--border);
     border-radius: 50px;
     padding: 0.4rem 0.8rem 0.4rem 0.4rem;
-    animation: fadeDown 0.6s 0.4s ease both;
 }
 
 .user-area .avatar {
@@ -331,7 +229,6 @@ header p.subtitle {
     border-radius: 50%;
     object-fit: cover;
     border: 2px solid var(--accent);
-    flex-shrink: 0;
 }
 
 .user-area .username {
@@ -362,11 +259,96 @@ header p.subtitle {
     background: var(--accent);
 }
 
-/* ---- OVERLAY ---- */
+.btn-login-fixed {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1rem;
+    letter-spacing: 0.1em;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.btn-login-fixed:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+/* HAMBURGER MENU */
+.hamburger-menu {
+    display: none;
+    position: fixed;
+    top: 5rem;
+    right: 1.5rem;
+    z-index: 20;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 0.5rem 0;
+    min-width: 180px;
+    flex-direction: column;
+}
+
+.hamburger-menu.open { display: flex; }
+
+.hamburger-menu a {
+    padding: 0.7rem 1.2rem;
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.85rem;
+    transition: color 0.15s ease, background 0.15s ease;
+}
+
+.hamburger-menu a:hover {
+    color: var(--text);
+    background: var(--border);
+}
+
+/* LEADERBOARD */
+.best-scores {
+    position: fixed;
+    top: 1.5rem;
+    left: 1.5rem;
+    z-index: 10;
+    width: 270px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1rem 1.2rem;
+    animation: fadeDown 0.6s 0.4s ease both;
+}
+
+.best-scores h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1rem;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    margin-bottom: 0.8rem;
+}
+
+.score-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.4rem 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.85rem;
+}
+
+.score-row:last-child { border-bottom: none; }
+.score-row .rank      { color: var(--accent); font-family: 'Bebas Neue', sans-serif; font-size: 1.1rem; width: 2rem; }
+.score-row .player    { color: var(--muted); }
+.score-row .pts       { color: var(--text); font-weight: 500; }
+.score-row .tempo     { color: var(--muted); font-size: 0.75rem; }
+
+/* OVERLAY */
 .overlay {
     position: fixed;
     inset: 0;
-    background: rgba(15, 14, 17, 0.85);
+    background: rgba(15,14,17,0.85);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -394,7 +376,7 @@ header p.subtitle {
 
 .overlay-score { color: var(--muted); font-size: 0.9rem; }
 
-/* ---- SELETTORE GRIGLIA ---- */
+/* SELETTORE GRIGLIA */
 .grid-size-selector {
     display: flex;
     align-items: center;
@@ -421,46 +403,8 @@ header p.subtitle {
     color: var(--accent);
 }
 
-/* ---- ANIMAZIONE POP FUSIONE ---- */
-/* ---- SLIDE DIREZIONI ---- */
-@keyframes slideSu {
-    from { transform: translateY(12px); opacity: 0.4; }
-    to   { transform: translateY(0);    opacity: 1; }
-}
-@keyframes slideGiu {
-    from { transform: translateY(-12px); opacity: 0.4; }
-    to   { transform: translateY(0);     opacity: 1; }
-}
-@keyframes slideSinistra {
-    from { transform: translateX(12px); opacity: 0.4; }
-    to   { transform: translateX(0);    opacity: 1; }
-}
-@keyframes slideDestra {
-    from { transform: translateX(-12px); opacity: 0.4; }
-    to   { transform: translateX(0);     opacity: 1; }
-}
-
-.slide-su        { animation: slideSu        0.12s ease both; }
-.slide-giu       { animation: slideGiu       0.12s ease both; }
-.slide-sinistra  { animation: slideSinistra  0.12s ease both; }
-.slide-destra    { animation: slideDestra    0.12s ease both; }
-
-/* Transizione colore fluida */
-.tile {
-    transition: background 0.1s ease, color 0.1s ease;
-}
-
-/* ---- ANIMAZIONI ---- */
-@keyframes fadeDown {
-    from { opacity: 0; transform: translateY(-20px); }
-    to   { opacity: 1; transform: translateY(0); }
-}
-@keyframes fadeUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to   { opacity: 1; transform: translateY(0); }
-}
-@keyframes popIn {
-    0%   { transform: scale(0.7); opacity: 0; }
-    80%  { transform: scale(1.08); }
-    100% { transform: scale(1);   opacity: 1; }
-}
+/* KEYFRAMES */
+@keyframes fadeDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeUp   { from { opacity: 0; transform: translateY(20px);  } to { opacity: 1; transform: translateY(0); } }
+@keyframes tilePop  { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
+@keyframes slide    { from { transform: translate(var(--dx), var(--dy)); opacity: 0.4; } to { transform: translate(0, 0); opacity: 1; } }
