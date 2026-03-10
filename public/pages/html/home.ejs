@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="it">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title><%= titolo %></title>
+        <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+        <link rel="stylesheet" href="/pages/style/home.css">
+    </head>
+    <body>
+
+        <!-- HEADER -->
+        <header>
+            <h1><%= titolo %></h1>
+            <p class="subtitle">Unisci i numeri — arriva a <strong style="color:var(--accent)">2048</strong></p>
+        </header>
+
+        <!-- PUNTEGGIO -->
+        <div class="score-bar">
+            <div class="score-box">
+                <div class="label">Punteggio</div>
+                <div class="value"><%= punteggio %></div>
+            </div>
+            <div class="score-box">
+                <div class="label">Record</div>
+                <div class="value"><%= record %></div>
+            </div>
+            <div class="score-box">
+                <div class="label">Mosse</div>
+                <div class="value"><%= moves %></div>
+            </div>
+        </div>
+
+        <!-- GRIGLIA DEMO -->
+        <div class="board-wrapper">
+            <div class="board">
+                <% grid.forEach(function(val) { %>
+                    <% if (val === 0) { %>
+                        <div class="tile tile-empty"></div>
+                    <% } else { %>
+                        <div class="tile tile-<%= val %>"><%= val %></div>
+                    <% } %>
+                <% }) %>
+            </div>
+        </div>
+
+        <!-- AZIONI -->
+        <div class="actions">
+            <% if (playing) { %>
+                <button class="btn btn-primary">▶ CONTINUA PARTITA</button>
+                <button class="btn btn-secondary">↺ NUOVA PARTITA</button>
+            <% } else { %>
+                <button class="btn btn-primary">▶ NUOVA PARTITA</button>
+            <% } %>
+            <button class="btn btn-secondary">⚙ IMPOSTAZIONI</button>
+        </div>
+
+        <!-- CLASSIFICA -->
+        <div class="best-scores">
+            <h2>★ MIGLIORI PUNTEGGI</h2>
+            <% leaderboard.forEach(function(entry, i) { %>
+                <div class="score-row">
+                    <span class="rank">#<%= i + 1 %></span>
+                    <span class="player"><%= entry.nome %></span>
+                    <span class="pts"><%= entry.score.toLocaleString('it-IT') %></span>
+                </div>
+            <% }) %>
+        </div>
+
+        <% if (userLoggedIn) { %>
+            <div class="user-area">
+                <img class="avatar" src="<%= utente.avatar %>" alt="<%= utente.nome %>" />
+                <span class="username"><%= utente.nome %></span>
+                <div class="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        <% } %>
+
+    </body>
+</html>

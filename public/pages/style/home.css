@@ -1,0 +1,318 @@
+:root {
+    --bg:       #0f0e11;
+    --surface:  #1a1820;
+    --border:   #2e2b38;
+    --accent:   #f5c542;
+    --accent2:  #e8714a;
+    --text:     #f0ecff;
+    --muted:    #6b6880;
+    --tile-2:    #3b3550; --tile-2-t:    #c8c0f0;
+    --tile-4:    #4a3a60; --tile-4-t:    #d8c8ff;
+    --tile-8:    #c4703a; --tile-8-t:    #fff8ee;
+    --tile-16:   #d4522a; --tile-16-t:   #fff;
+    --tile-32:   #e04020; --tile-32-t:   #fff;
+    --tile-64:   #e82010; --tile-64-t:   #fff;
+    --tile-128:  #f5c542; --tile-128-t:  #2a1a00;
+    --tile-256:  #f0b020; --tile-256-t:  #2a1a00;
+    --tile-512:  #ea9e00; --tile-512-t:  #2a1a00;
+    --tile-1024: #e08c00; --tile-1024-t: #fff;
+    --tile-2048: #ffffff; --tile-2048-t: #0f0e11;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    padding: 2rem 1rem;
+    overflow-x: hidden;
+}
+
+/* Sfondo con pattern geometrico */
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+    linear-gradient(var(--border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size: 48px 48px;
+    opacity: 0.35;
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* ---- HEADER ---- */
+header {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    animation: fadeDown 0.6s ease both;
+}
+
+header h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(4rem, 14vw, 8rem);
+    letter-spacing: 0.06em;
+    line-height: 1;
+    color: var(--accent);
+    text-shadow:
+    4px 4px 0 var(--accent2),
+    8px 8px 0 #3a1a00;
+}
+
+header p.subtitle {
+    color: var(--muted);
+    font-size: 0.8rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-top: 0.4rem;
+}
+
+/* ---- SCORE BAR ---- */
+.score-bar {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    gap: 1rem;
+    animation: fadeDown 0.6s 0.1s ease both;
+}
+
+.score-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.6rem 1.4rem;
+    text-align: center;
+    min-width: 100px;
+}
+
+.score-box .label {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+}
+
+.score-box .value {
+    font-size: 1.6rem;
+    font-weight: 500;
+    color: var(--text);
+    line-height: 1.2;
+}
+
+/* ---- GRIGLIA ---- */
+.board-wrapper {
+    position: relative;
+    z-index: 1;
+    animation: fadeUp 0.6s 0.2s ease both;
+}
+
+.board {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 10px;
+    box-shadow:
+    0 0 0 1px var(--border),
+    0 20px 60px rgba(0,0,0,0.6);
+}
+
+.tile {
+    width: clamp(64px, 18vw, 96px);
+    height: clamp(64px, 18vw, 96px);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(1.4rem, 4vw, 2.2rem);
+    letter-spacing: 0.02em;
+    transition: transform 0.1s ease;
+    animation: popIn 0.2s ease both;
+}
+
+.tile:hover { transform: scale(1.04); }
+
+/* Colori tile */
+.tile-2    { background: var(--tile-2);    color: var(--tile-2-t); }
+.tile-4    { background: var(--tile-4);    color: var(--tile-4-t); }
+.tile-8    { background: var(--tile-8);    color: var(--tile-8-t); }
+.tile-16   { background: var(--tile-16);   color: var(--tile-16-t); }
+.tile-32   { background: var(--tile-32);   color: var(--tile-32-t); }
+.tile-64   { background: var(--tile-64);   color: var(--tile-64-t); }
+.tile-128  { background: var(--tile-128);  color: var(--tile-128-t); }
+.tile-256  { background: var(--tile-256);  color: var(--tile-256-t); }
+.tile-512  { background: var(--tile-512);  color: var(--tile-512-t); }
+.tile-1024 { background: var(--tile-1024); color: var(--tile-1024-t); }
+.tile-2048 { background: var(--tile-2048); color: var(--tile-2048-t); }
+
+.tile-empty {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border);
+}
+
+/* ---- AZIONI ---- */
+.actions {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.8rem;
+    width: 100%;
+    max-width: 420px;
+    animation: fadeUp 0.6s 0.3s ease both;
+}
+
+.btn {
+    width: 100%;
+    padding: 0.9rem 2rem;
+    border: none;
+    border-radius: 8px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.4rem;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.btn:hover  { transform: translateY(-2px); }
+.btn:active { transform: translateY(1px); }
+
+.btn-primary {
+    background: var(--accent);
+    color: #1a1000;
+    box-shadow: 0 6px 20px rgba(245,197,66,0.35);
+}
+
+.btn-secondary {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 1rem;
+}
+
+.btn-secondary:hover { border-color: var(--accent2); color: var(--text); }
+
+/* ---- CLASSIFICA (top left) ---- */
+.best-scores {
+    position: fixed;
+    top: 1.5rem;
+    left: 1.5rem;
+    z-index: 10;
+    width: 220px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1rem 1.2rem;
+    animation: fadeDown 0.6s 0.4s ease both;
+}
+
+.best-scores h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1rem;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    margin-bottom: 0.8rem;
+}
+
+.score-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.4rem 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.85rem;
+}
+
+.score-row:last-child { border-bottom: none; }
+
+.score-row .rank {
+    color: var(--accent);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.1rem;
+    width: 2rem;
+}
+
+.score-row .player { color: var(--muted); }
+.score-row .pts    { color: var(--text); font-weight: 500; }
+
+/* ---- USER AREA  ---- */
+/* ---- USER AREA (top right) ---- */
+.user-area {
+    position: fixed;
+    top: 1.5rem;
+    right: 1.5rem;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 50px;
+    padding: 0.4rem 0.8rem 0.4rem 0.4rem;
+    animation: fadeDown 0.6s 0.4s ease both;
+}
+
+.user-area .avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--accent);
+    flex-shrink: 0;
+}
+
+.user-area .username {
+    font-size: 0.75rem;
+    color: var(--text);
+    white-space: nowrap;
+}
+
+.user-area .hamburger {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    cursor: pointer;
+    padding: 4px;
+    margin-left: 0.2rem;
+}
+
+.user-area .hamburger span {
+    display: block;
+    width: 18px;
+    height: 2px;
+    background: var(--muted);
+    border-radius: 2px;
+    transition: background 0.2s ease;
+}
+
+.user-area .hamburger:hover span {
+    background: var(--accent);
+}
+
+/* ---- ANIMAZIONI ---- */
+@keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes popIn {
+    0%   { transform: scale(0.7); opacity: 0; }
+    80%  { transform: scale(1.08); }
+    100% { transform: scale(1);   opacity: 1; }
+}
