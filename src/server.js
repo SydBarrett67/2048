@@ -8,7 +8,6 @@ const { leggiUtenti, salvaUtenti } = require("./utils.js");
 const app = express();
 const PORT = 3000;
 
-// const USERS_PATH = path.join(__dirname, "jsons/users.json");
 const LEADERBOARD_PATH = path.join(__dirname, "jsons/leaderboard.json");
 
 app.set('view engine', 'ejs');
@@ -17,7 +16,7 @@ app.set('views', path.join(__dirname, '../public/pages/html'));
 app.use(express.static(path.join(__dirname, '../public')));
 app.use(express.json());
 
-// ---- SESSION ----
+// Sessioni con durata di 24 ore
 app.use(session({
     secret: "2048-secret-key",
     resave: false,
@@ -25,12 +24,20 @@ app.use(session({
     cookie: { maxAge: 1000 * 60 * 60 * 24 }
 }));
 
-// ---- HOME ----
+
+// Pagine
+
 app.get("/home", (req, res) => {
     const gridSize = parseInt(req.query.size) || 4;
-    const user   = req.session.user ?? null;
+    const user = req.session.user ?? null;
 
+    const utenti = leggiUtenti();
+    const utenteSalvato = utenti.find(u => u.nome === user?.nome);
+    const tema = utenteSalvato?.tema ?? "dark";
+
+    
     const leaderboard = JSON.parse(fs.readFileSync(LEADERBOARD_PATH, "utf-8"));
+    leaderboard.sort((a, b) => a.tempo - b.tempo);
 
     res.render("home", {
         titolo: "2048",
@@ -43,63 +50,54 @@ app.get("/home", (req, res) => {
         leaderboard,
         userLoggedIn: !!user,
         user: user ?? { nome: "", avatar: null },
-        theme: user?.tema ?? "dark"
+        theme: tema || "dark"
     });
 });
 
-// ---- LOGIN ----
 app.get("/login", (req, res) => {
+    // Se già loggato, rimanda direttamente a home
     if (req.session.user) return res.redirect("/home");
     res.render("login");
 });
 
-// ---- Storico ----
 app.get("/storico", (req, res) => {
     if (!req.session.user) return res.redirect("/login");
     res.render("storico", { user: req.session.user });
 });
 
-// ---- API ----
 
-// Login — solo username
+// API
+
+// Login solo per username — se non esiste lo crea
 app.post("/api/login", (req, res) => {
     const { nome } = req.body;
     if (!nome) return res.status(400).json({ error: "Username mancante" });
 
     const utenti = leggiUtenti();
     if (!utenti.find(u => u.nome === nome)) {
-        utenti.push({ nome, avatar: null });
+        utenti.push({ nome, avatar: null, tema: "dark" });
         salvaUtenti(utenti);
     }
 
-    req.session.user = { nome, avatar: null };
+    const utente = utenti.find(u => u.nome === nome);
+    req.session.user = { nome, avatar: null, tema: utente?.tema ?? "dark" };
     res.json({ success: true });
 });
 
-// Logout
 app.post("/api/logout", (req, res) => {
     req.session.destroy();
     res.json({ success: true });
 });
 
-// user corrente
-app.get("/api/me", (req, res) => {
-    if (!req.session.user)
-        return res.status(401).json({ error: "Non loggato" });
-    res.json(req.session.user);
-});
-
-// Salva punteggio
+// Salva il punteggio nella leaderboard globale (top 10) e nello storico dell'utente
 app.post("/api/score", (req, res) => {
     const { nome, punteggio, mosse, tempo } = req.body;
 
-    // ---- Leaderboard globale ----
     const leaderboard = JSON.parse(fs.readFileSync(LEADERBOARD_PATH, "utf-8"));
     leaderboard.push({ nome, punteggio, mosse, tempo, data: new Date().toISOString() });
     leaderboard.sort((a, b) => b.punteggio - a.punteggio);
     fs.writeFileSync(LEADERBOARD_PATH, JSON.stringify(leaderboard.slice(0, 10), null, 4));
 
-    // ---- Storico user ----
     const utenti = leggiUtenti();
     const user = utenti.find(u => u.nome === nome);
     if (user) {
@@ -111,24 +109,17 @@ app.post("/api/score", (req, res) => {
     res.json({ success: true });
 });
 
+// Storico partite dell'utente loggato, in ordine dal più recente
 app.get("/api/storico", (req, res) => {
     if (!req.session.user)
         return res.status(401).json({ error: "Non loggato" });
 
     const utenti = leggiUtenti();
     const user = utenti.find(u => u.nome === req.session.user.nome);
-    const storico = user?.storico ?? [];
-
-    res.json(storico.reverse());
+    res.json((user?.storico ?? []).reverse());
 });
 
-// Leggi classifica
-app.get("/api/leaderboard", (req, res) => {
-    const data = JSON.parse(fs.readFileSync(LEADERBOARD_PATH, "utf-8"));
-    res.json(data);
-});
-
-// Temi
+// Aggiorna il tema dell'utente, sia nel JSON che nella sessione attiva
 app.post("/api/tema", (req, res) => {
     if (!req.session.user)
         return res.status(401).json({ error: "Non loggato" });
@@ -148,9 +139,10 @@ app.post("/api/tema", (req, res) => {
     res.json({ success: true });
 });
 
-// ---- FALLBACK 404 ----
+
+// Fallback 404
 app.use((req, res) => {
-    res.status(404).send("<h1> Pagina non trovata</h1>");
+    res.status(404).send("<h1>Pagina non trovata</h1>");
 });
 
 app.listen(PORT, () => {

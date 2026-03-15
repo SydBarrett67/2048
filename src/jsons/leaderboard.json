@@ -1,2 +1,23 @@
 [
+    {
+        "nome": "SydBarrett",
+        "punteggio": 18004,
+        "mosse": 453,
+        "tempo": 452,
+        "data": "2026-03-15T20:48:21.362Z"
+    },
+    {
+        "nome": "RogerWaters",
+        "punteggio": 22502,
+        "mosse": 356,
+        "tempo": 360,
+        "data": "2026-03-15T20:48:21.362Z"
+    },
+    {
+        "nome": "DavidGilmour",
+        "punteggio": 24210,
+        "mosse": 284,
+        "tempo": 404,
+        "data": "2026-03-15T20:48:21.362Z"
+    }
 ]

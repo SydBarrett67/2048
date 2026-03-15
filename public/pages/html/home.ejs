@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="it" data-theme="<%= theme %>">
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -86,7 +86,7 @@
         <% if (userLoggedIn) { %>
             <script>window.USERNAME = "<%= user.nome %>";</script>
             <div class="user-area">
-                <img class="avatar" src="<%= user.avatar || '/img/default-avatar.png' %>" alt="<%= user.nome %>" />
+                <img class="avatar" src="<%= user.avatar || '../helpers/default-avatar.png' %>" alt="<%= user.nome %>" />
                 <span class="username"><%= user.nome %></span>
                 <div class="hamburger" id="btn-hamburger">
                     <span></span>
@@ -111,7 +111,6 @@
             <a href="/login" class="btn-login-fixed">▶ LOGIN</a>
         <% } %>
 
-        <script>window.THEME = "<%= theme %>";</script>
         <script src="/pages/js/home.js"></script>
     </body>
 </html>
